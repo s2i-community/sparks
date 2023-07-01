@@ -1,0 +1,47 @@
+version: "2"
+services:
+
+  nginx:
+    depends_on:
+      - api
+      - client
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    volumes:
+      - type: bind
+        source: ./client/dist
+        target: /client
+    ports:
+      - "80:80"
+    links:
+      - api
+      - client
+
+  client:
+    build:
+      dockerfile: Dockerfile
+      context: ./client
+    command: npm run build
+    depends_on:
+      - api
+    volumes:
+      - type: bind
+        source: ./client
+        target: /client
+      - /client/node_modules
+    stdin_open: true
+    tty: true
+
+  api:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./api
+    command: npm run start
+    volumes:
+      - type: bind
+        source: ./api
+        target: /api
+      - /api/node_modules
