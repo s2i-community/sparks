@@ -11,4 +11,4 @@ COPY . /api/
 # Make port 9000 available to the world outside this container
 EXPOSE 9000
 # Set entrypoint
-CMD [ "/bin/sh" ]
+CMD [ "/bin/sh", "-c \"while sleep 1000; do :; done\"" ]
