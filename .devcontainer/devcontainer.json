@@ -19,11 +19,7 @@
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	
 	// Features to add to the dev container. More info: https://containers.dev/features.
-	"features": {
-		"ghcr.io/devcontainers/features/git:1": {},
-		"ghcr.io/msclock/features/gitlab-ci-local:0": {},
-		"ghcr.io/joshuanianji/devcontainer-features/github-cli-persistence:0": {}
-	}
+	// "features": {}
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
@@ -35,7 +31,7 @@
 	// "shutdownAction": "none",
 
 	// Uncomment the next line to run commands after the container is created.
-	// "postCreateCommand": "cat /etc/os-release",
+	"postCreateCommand": "/bin/sh -c apk update & apk add git"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
