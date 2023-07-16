@@ -13,5 +13,8 @@
 			"ms-azuretools.vscode-docker",
 			"snyk-security.snyk-vulnerability-scanner"
 		]
+	},
+	"settings": {
+		"DockerRun.DisableAutoGenerateConfig": true
 	}
 }
