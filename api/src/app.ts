@@ -1,10 +1,10 @@
 import express, { Application } from "express";
-import morgan from "morgan";
 import { startServer } from "./services/startServer";
 import dotenv from "dotenv";
 import csrf from "csurf";
 import { connectDB } from "./services/db/connection";
 import { apiRouter } from "./routes";
+import { morganMiddleware } from "./middlewares";
 
 dotenv.config();
 
@@ -26,13 +26,13 @@ app.disable("x-powered-by");
 app.use(csrf());
 
 // HTTP request logger middleware
-app.use(morgan("common"));
+app.use(morganMiddleware);
 
 // load v1 api router
 app.use("/api", apiRouter);
 
 
-// TODO: add error handling middleware at the end of the middleware stack
+// TODO: m.m. add error handling middleware at the end of the middleware stack
 
 
 connectDB(mongoDbURI)
