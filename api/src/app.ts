@@ -1,11 +1,28 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application } from "express";
+import morgan from "morgan";
 import { startServer } from "./services/startServer";
-require("dotenv").config();
-const app: Application = express();
-const morgan = require("morgan");
-const connectDB = require("./services/db/connection");
+import dotenv from "dotenv";
+import csrf from "csurf";
+import { connectDB } from "./services/db/connection";
 
-const PORT = parseInt(process.env.PORT ?? "") || 9000;
+dotenv.config();
+
+/** The port number to listen on. */
+const PORT = parseInt(process.env.PORT) || 9000;
+/** The MongoDB URI to connect to. */
+const mongoDbURI = process.env.MONGO_URI;
+/** The Express application instance. */
+const app: Application = express();
+
+// Disable the X-Powered-By header.
+// This header is enabled by default in Express and is often used by attackers to determine what server is running.
+app.disable("x-powered-by");
+
+// Enable Cross-Site Request Forgery (CSRF) protection.
+// CSRF attacks can allow attackers to perform actions on behalf of authenticated users
+// This middleware adds a csrfToken() method to the request object.
+// This token is used to validate the request body when making POST requests.
+app.use(csrf());
 
 // HTTP request logger middleware
 app.use(morgan("common"));
@@ -13,7 +30,8 @@ app.use(morgan("common"));
 // load v1 api router
 app.use("/api/v1", require("./api_v1/router"));
 
-connectDB()
+
+connectDB(mongoDbURI)
   .then(() => startServer(app, PORT))
   .catch((err: Error) => {
     console.error(err);

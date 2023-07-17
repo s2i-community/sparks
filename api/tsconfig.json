@@ -12,5 +12,10 @@
   ],
   "exclude": [
     "./dist"
-  ]
+  ],
+  "paths": {
+    "@controller": [
+      "./controllers/*"
+    ]
+  }
 }
