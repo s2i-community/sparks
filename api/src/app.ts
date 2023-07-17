@@ -5,6 +5,7 @@ import csrf from "csurf";
 import { connectDB } from "./services/db/connection";
 import { apiRouter } from "./routes";
 import { morganMiddleware } from "./middlewares";
+import {errorHandler} from "./middlewares";
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ const PORT = parseInt(process.env.PORT) || 9000;
 const mongoDbURI = process.env.MONGO_URI;
 /** The Express application instance. */
 const app: Application = express();
+
+
 
 // Disable the X-Powered-By header.
 // This header is enabled by default in Express and is often used by attackers to determine what server is running.
@@ -28,13 +31,18 @@ app.use(csrf());
 // HTTP request logger middleware
 app.use(morganMiddleware);
 
+app.use(express.json())
+
 // load v1 api router
 app.use("/api", apiRouter);
 
+// error handler middleware
+app.use(errorHandler);
 
-// TODO: m.m. add error handling middleware at the end of the middleware stack
 
 
+
+// Connect to the database and start the server.
 connectDB(mongoDbURI)
   .then(() => startServer(app, PORT))
   .catch((err: Error) => {
