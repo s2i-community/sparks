@@ -4,6 +4,7 @@ import { startServer } from "./services/startServer";
 import dotenv from "dotenv";
 import csrf from "csurf";
 import { connectDB } from "./services/db/connection";
+import { apiRouter } from "./routes";
 
 dotenv.config();
 
@@ -28,7 +29,10 @@ app.use(csrf());
 app.use(morgan("common"));
 
 // load v1 api router
-app.use("/api/v1", require("./api_v1/router"));
+app.use("/api", apiRouter);
+
+
+// TODO: add error handling middleware at the end of the middleware stack
 
 
 connectDB(mongoDbURI)
