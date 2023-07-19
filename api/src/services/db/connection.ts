@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { log } from "../../utils";
 
 /**
  * Connects to the MongoDB database using the MONGO_URI environment variable.
@@ -7,10 +8,9 @@ import mongoose from "mongoose";
 export const connectDB = async (uri: string) => {
   try {
     await mongoose.connect(uri);
-    console.log("DB connected");
+    log.info("DB connected.");
     return;
-  } catch (err) {
-    console.error("DB connection failed");
-    throw err;
+  } catch (err: any) {
+    throw new Error(`DB connection failed: ${err?.message}`);
   }
 };

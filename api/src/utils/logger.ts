@@ -1,5 +1,4 @@
-import { createLogger, transports, format } from "winston";
-
+import { createLogger, format, transports } from "winston";
 import { OperationError } from "./errors/operation.error";
 
 const logConsole = new transports.Console();
@@ -21,15 +20,15 @@ const daily = new DailyRotateFile({
  * @param info The log information object.
  * @returns The formatted log message.
  */
-const customFormat = format.printf((info) => {
-  let message = `${info.timestamp} ${info.session} ${info.level}: ${info.message}`;
+const customFormat = format.printf((info: Record<string, any>) => {
+  let message = `[${info['level']}] ${info['timestamp']} ${info['session']}: ${info['message']}`;
 
   if (
     !(info instanceof OperationError) &&
-    info.level === "error" &&
-    info.stack
+    info['level'] === "error" &&
+    info['stack']
   ) {
-    message = `\n${info.stack}`;
+    message = `\n${info['stack']}`;
   }
 
   return message;
@@ -40,19 +39,19 @@ const customFormat = format.printf((info) => {
  * @param info The log information object.
  * @returns The log information object with the error stack trace added if applicable.
  */
-const errorStackFormat = format((info) => {
+const errorStackFormat = format((info: any) => {
   if (
     !(info instanceof OperationError) &&
     info.level === "error" &&
-    info.stack
+    info['stack']
   ) {
     return Object.assign({}, info, {
-      stack: info.stack,
+      stack: info['stack'],
       message: info.message,
     });
   }
 
-  return info;
+  return info as OperationError;
 });
 
 /**
@@ -76,7 +75,7 @@ const logger = createLogger({
   exceptionHandlers: [logConsole, daily],
 });
 
-if (process.env.NODE_ENV === "development") logger.remove(daily);
+if (process.env["NODE_ENV"] === "local") logger.remove(daily);
 else logger.remove(logConsole);
 
 

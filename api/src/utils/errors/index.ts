@@ -19,20 +19,19 @@ export function errorToRestStatus(error: Error): number {
     return 400;
 
   // 401
-  if (false)
-    return 401;
+  // if (false) return 401;
 
   // 403
-  if (false) return 403;
+  // if (false) return 403;
 
   // 404
-  if (false) return 404;
+  // if (false) return 404;
 
   // 409
-  if (false) return 409;
+  // if (false) return 409;
 
   // 500
-  if (false) return 500;
+  // if (false) return 500;
 
   return 500;
 }

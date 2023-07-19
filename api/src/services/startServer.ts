@@ -1,4 +1,5 @@
 import { Application } from "express";
+import { log } from "../utils";
 
 /**
  * Starts the server on the specified port.
@@ -10,12 +11,13 @@ export const startServer = (app: Application, port: number) => {
   return new Promise((resolve, reject) => {
     try {
       app.listen(port, () => {
-        console.log("Server started on port", port);
+        log.info(`Server started on port ${port}`);
         resolve(true);
       });
-    } catch (err) {
-      console.error("Server filed to start.");
-      reject(err);
+    } catch (err: any) {
+      reject(
+        new Error(`Server filed to start: ${err?.message}`)
+      );
     }
   });
 };
