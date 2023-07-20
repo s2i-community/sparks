@@ -1,0 +1,6 @@
+[submodule "api"]
+	path = api
+	url = ./api
+[submodule "client"]
+	path = client
+	url = ./client
