@@ -1,6 +1,6 @@
 [submodule "api"]
 	path = api
-	url = ./api
+	url = https://github.com/s2i-community/sparks-api.git
 [submodule "client"]
 	path = client
-	url = ./client
+	url = https://github.com/s2i-community/sparks-client.git
