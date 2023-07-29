@@ -7,12 +7,12 @@ services:
       - client
     restart: always
     build:
-      dockerfile: Dockerfile
+      dockerfile: prod.dockerfile
       context: ./nginx
     volumes:
       - type: bind
         source: ./client/dist
-        target: /client
+        target: /usr/share/nginx/html
     ports:
       - "80:80"
     links:

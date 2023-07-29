@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 services:
 
   nginx:
@@ -7,7 +7,7 @@ services:
       - client
     restart: always
     build:
-      dockerfile: Dockerfile
+      dockerfile: dev.dockerfile
       context: ./nginx
     ports:
       - "80:80"
@@ -24,8 +24,11 @@ services:
       - api
     volumes:
       - type: bind
+        source: ./.git
+        target: /workspaces/.git
+      - type: bind
         source: ./client
-        target: /client
+        target: /workspaces/client
     stdin_open: true
     tty: true
 
@@ -37,5 +40,8 @@ services:
     command: /bin/sh -c "while sleep 1000; do :; done"
     volumes:
       - type: bind
+        source: ./.git
+        target: /workspaces/.git
+      - type: bind
         source: ./api
-        target: /api
+        target: /workspaces/api
