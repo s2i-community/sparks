@@ -21,9 +21,8 @@ services:
 
   client:
     build:
-      dockerfile: Dockerfile
+      dockerfile: prod.dockerfile
       context: ./client
-    command: npm run build
     depends_on:
       - api
     volumes:

@@ -11,7 +11,10 @@
 			"formulahendry.auto-close-tag",
 			"formulahendry.auto-rename-tag",
 			"ms-azuretools.vscode-docker",
-			"snyk-security.snyk-vulnerability-scanner"
+			"snyk-security.snyk-vulnerability-scanner",
+			"ms-azuretools.vscode-docker",
+			"ms-vscode-remote.remote-containers",
+			"george3447.docker-run",
 		]
 	},
 	"settings": {
