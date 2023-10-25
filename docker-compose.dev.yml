@@ -1,4 +1,5 @@
 version: "3"
+name: sparks-dev
 services:
 
   nginx:
@@ -38,6 +39,10 @@ services:
       dockerfile: dev.dockerfile
       context: ./api
     command: /bin/sh -c "while sleep 1000; do :; done"
+    links:
+      - mongo
+    depends_on:
+      - mongo
     volumes:
       - type: bind
         source: ./.git
@@ -45,3 +50,14 @@ services:
       - type: bind
         source: ./api
         target: /workspaces/api
+
+  mongo:
+    image: mongo:7.0.1
+    restart: always
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      #MONGO_INITDB_DATABASE: base
+    volumes:
+      - ./db/data:/data/db
