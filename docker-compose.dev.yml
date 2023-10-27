@@ -48,14 +48,20 @@ services:
       - ./api:/workspaces/api
 
   mongo:
-    image: mongo
+    image: mongo:7.0.2
     container_name: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
       MONGO_INITDB_DATABASE: base
+      MONGO_USER: devuser
+      MONGO_PASSWORD: devpass
+      MONGO_DB_BASE_NAME: base
+    ports:
+      - "27017:27017"
     volumes:
+      - ./db/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - sparks-mongodb-data:/data/db
 
 volumes:
