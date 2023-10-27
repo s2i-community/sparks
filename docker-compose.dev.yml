@@ -3,6 +3,8 @@ name: sparks-dev
 services:
 
   nginx:
+    container_name: nginx
+    hostname: nginx
     depends_on:
       - api
       - client
@@ -17,6 +19,8 @@ services:
       - client
 
   client:
+    container_name: client
+    hostname: client
     build:
       dockerfile: dev.dockerfile
       context: ./client
@@ -24,16 +28,13 @@ services:
     depends_on:
       - api
     volumes:
-      - type: bind
-        source: ./.git
-        target: /workspaces/.git
-      - type: bind
-        source: ./client
-        target: /workspaces/client
+      - ./client:/workspaces/client
     stdin_open: true
     tty: true
 
   api:
+    container_name: api
+    hostname: api
     restart: always
     build:
       dockerfile: dev.dockerfile
@@ -44,20 +45,18 @@ services:
     depends_on:
       - mongo
     volumes:
-      - type: bind
-        source: ./.git
-        target: /workspaces/.git
-      - type: bind
-        source: ./api
-        target: /workspaces/api
+      - ./api:/workspaces/api
 
   mongo:
-    image: mongo:7.0.1
+    image: mongo
+    container_name: mongo
     restart: always
-    command: /bin/sh -c "while sleep 1000; do :; done"
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
-      #MONGO_INITDB_DATABASE: base
+      MONGO_INITDB_DATABASE: base
     volumes:
-      - ./db/data:/data/db
+      - sparks-mongodb-data:/data/db
+
+volumes:
+  sparks-mongodb-data:
